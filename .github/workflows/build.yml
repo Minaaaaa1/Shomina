@@ -18,10 +18,18 @@ jobs:
           npm install
           if [ ! -d android ]; then npx cap add android; fi
           npx cap sync android
+          # === الحل: نحدثه لـ Android 34 ===
+          sed -i 's/compileSdkVersion = .*/compileSdkVersion = 34/' android/variables.gradle || true
+          sed -i 's/targetSdkVersion = .*/targetSdkVersion = 34/' android/variables.gradle || true
+          sed -i 's/compileSdk .*/compileSdk 34/' android/app/build.gradle || true
+          sed -i 's/targetSdk .*/targetSdk 34/' android/app/build.gradle || true
+          sed -i "s/com.android.tools.build:gradle:.*/com.android.tools.build:gradle:8.9.1'/" android/build.gradle || true
+          # تحديث Gradle wrapper
+          sed -i 's/gradle-8.*-all.zip/gradle-8.9-all.zip/' android/gradle/wrapper/gradle-wrapper.properties || true
           cd android
           echo "sdk.dir=$ANDROID_HOME" > local.properties
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew clean assembleDebug --stacktrace
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:

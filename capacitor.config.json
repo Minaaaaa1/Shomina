@@ -1,6 +1,5 @@
 {
   "appId": "com.shomina.app",
   "appName": "Shomina",
-  "webDir": "www",
-  "bundledWebRuntime": false
+  "webDir": "www"
 }

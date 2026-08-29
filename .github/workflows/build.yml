@@ -13,26 +13,15 @@ jobs:
           distribution: temurin
           java-version: 17
       - uses: android-actions/setup-android@v3
-      - name: Build APK
-        run: |
+      - run: |
           npm install
-          if [ ! -d android ]; then npx cap add android; fi
+          npx cap add android
           npx cap sync android
-          # نحدث لـ SDK 34 + Gradle 8.11.1
-          sed -i 's/compileSdkVersion = .*/compileSdkVersion = 34/' android/variables.gradle || true
-          sed -i 's/targetSdkVersion = .*/targetSdkVersion = 34/' android/variables.gradle || true
-          sed -i 's/compileSdk .*/compileSdk 34/' android/app/build.gradle || true
-          sed -i 's/targetSdk .*/targetSdk 34/' android/app/build.gradle || true
-          sed -i "s/com.android.tools.build:gradle:.*/com.android.tools.build:gradle:8.9.1'/" android/build.gradle || true
-          # ده السطر المهم اللي كان ناقص
-          sed -i 's|gradle-.*-all.zip|gradle-8.11.1-all.zip|' android/gradle/wrapper/gradle-wrapper.properties
-          cat android/gradle/wrapper/gradle-wrapper.properties
           cd android
           echo "sdk.dir=$ANDROID_HOME" > local.properties
           chmod +x gradlew
-          ./gradlew clean assembleDebug
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+          ./gradlew assembleDebug
+      - uses: actions/upload-artifact@v4
         with:
           name: Shomina-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk

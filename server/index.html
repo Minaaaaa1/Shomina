@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Shomina</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050508;color:#fff;font-family:sans-serif;text-align:center}
+img.hero{width:100%;max-width:560px;border-radius:24px;margin:12px auto;display:block;box-shadow:0 0 80px rgba(124,58,237,.4)}
+.id-box{background:#0a1a14;border:2px solid #06ffa5;color:#06ffa5;padding:16px;border-radius:18px;font-size:28px;font-weight:900;max-width:460px;margin:16px auto;letter-spacing:2px;font-family:monospace;text-shadow:0 0 10px #06ffa5}
+.btn{background:linear-gradient(135deg,#7c3aed,#06ffa5);color:#fff;border:0;padding:14px 22px;border-radius:14px;font-weight:800;width:90%;max-width:460px;margin:10px auto;display:block}
+.vibes{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:14px}
+.vibe{background:rgba(255,255,255,.06);border:1px solid #333;padding:7px 12px;border-radius:20px;font-size:12px}
+.vibe.active{background:rgba(6,255,165,.15);border-color:#06ffa5;color:#06ffa5}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px;margin:14px auto;max-width:560px;text-align:right}
+.input{width:100%;background:#12121c;border:1px solid #333;border-radius:10px;padding:10px;color:#fff}
+</style></head><body>
+<img src="wolf.jpg" class="hero">
+<div id="myId" class="id-box">SHO-JNZN-FMAF</div>
+<button class="btn" onclick="copyId()">نسخ الـ ID 📋</button>
+<div class="vibes">
+<span class="vibe active">عادي 😊</span><span class="vibe">فضفضة 😢</span><span class="vibe">هزار 😂</span><span class="vibe">نصيحة 🤔</span><span class="vibe">مخنوق 😤</span>
+</div>
+<div class="card">
+<h3 style="color:#06ffa5;font-size:13px">➕ إضافة صديق</h3>
+<div style="display:flex;gap:8px;margin-top:8px"><input id="fid" class="input" placeholder="SHO-XXXX-XXXX"><button class="btn" style="width:auto" onclick="addF()">إضافة</button></div>
+<div id="flist" style="margin-top:10px;color:#888;font-size:12px">لسه مفيش صحاب</div>
+</div>
+<script>
+let u=JSON.parse(localStorage.getItem('shomina_user')||'null');
+async function init(){if(!u){let r=await fetch('/api/users/create',{method:'POST'});u=await r.json();localStorage.setItem('shomina_user',JSON.stringify(u));}document.getElementById('myId').textContent=u.shomina_id}
+function copyId(){navigator.clipboard.writeText(u.shomina_id);alert('تم النسخ: '+u.shomina_id)}
+async function addF(){let id=document.getElementById('fid').value;let r=await fetch('/api/friends/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({my_id:u.id,friend_shomina_id:id})});alert(r.ok?'تم ✅':'ID مش موجود')}
+init();
+</script>
+</body></html>

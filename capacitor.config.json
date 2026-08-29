@@ -1,0 +1,6 @@
+{
+  "appId": "com.shomina.ghost",
+  "appName": "Shomina",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

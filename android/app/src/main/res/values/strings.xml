@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Shomina</string>
+    <string name="title_activity_main">Shomina</string>
+    <string name="package_name">com.shomina.ghost</string>
+    <string name="custom_url_scheme">com.shomina.ghost</string>
+</resources>

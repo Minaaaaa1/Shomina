@@ -15,7 +15,6 @@ jobs:
       - name: Install and build
         run: |
           npm install
-          npm run build || echo "no build script"
           npx cap sync android
           cd android
           chmod +x gradlew

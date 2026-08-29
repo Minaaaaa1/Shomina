@@ -1,2 +1,136 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Shomina</title></head>
-<body style="font-family:sans-serif;text-align:center;padding:50px"><h1>Shomina شغال ✅</h1></body></html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Shomina Ghost</title>
+<style>
+*{box-sizing:border-box;font-family:system-ui}body{margin:0;background:#050505;color:#fff;min-height:100vh}
+.hidden{display:none!important}
+.login{padding:24px;max-width:400px;margin:0 auto;padding-top:60px}
+.logo{font-size:32px;font-weight:900;text-align:center;margin-bottom:6px;letter-spacing:1px}
+.sub{color:#666;text-align:center;margin-bottom:30px;font-size:13px}
+.btn{width:100%;padding:14px;border-radius:14px;border:1px solid #222;background:#111;color:#fff;font-weight:bold;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:14px}
+.btn.google{background:#fff;color:#000}
+.btn.phone{background:#1a1a1a}
+.ghost-card{background:linear-gradient(135deg,#111,#1a1a1a);border:1px solid #222;border-radius:20px;padding:16px;margin:14px}
+.row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #1a1a1a}
+.switch{width:44px;height:26px;background:#222;border-radius:20px;position:relative;cursor:pointer}
+.switch.on{background:#fff}
+.dot{width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:.2s}
+.switch.on.dot{left:21px;background:#000}
+header{padding:14px;background:#0a0a0a;border-bottom:1px solid #1a1a1a;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.code{font-family:monospace;background:#1a1a1a;border:1px dashed #333;padding:6px 10px;border-radius:10px;font-size:12px;letter-spacing:1px}
+input{width:100%;background:#0f0f0f;border:1px solid #222;color:#fff;padding:13px;border-radius:12px;outline:none}
+.friend{padding:14px;border-bottom:1px solid #111;display:flex;justify-content:space-between;align-items:center}
+#chat{position:fixed;inset:0;background:#000;z-index:50;display:flex;flex-direction:column}
+.msgs{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.bubble{max-width:75%;padding:10px 12px;border-radius:16px;font-size:14px;line-height:1.4}
+.me{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:4px}
+.other{align-self:flex-start;background:#1e1e1e}
+</style>
+</head>
+<body>
+
+<div id="loginPage" class="login">
+<div class="logo">SHOMINA 👻</div>
+<div class="sub">مراسلة مجهولة • وضع الشبح</div>
+
+<button class="btn google" onclick="login('google')"> <span>▶</span> الدخول بـ Gmail</button>
+<button class="btn phone" onclick="login('phone')"> <span>☎</span> الدخول برقم التليفون</button>
+
+<div style="margin-top:30px;color:#444;font-size:11px;text-align:center;line-height:1.6">
+بتسجيلك انت موافق ان هويتك الحقيقية مش هتظهر لحد<br>اللي هيظهر هو كودك بس
+</div>
+</div>
+
+<div id="appPage" class="hidden">
+<header>
+<div><b>SHOMINA</b><div id="ghostStatus" style="font-size:10px;color:#0f0">● وضع الشبح نشط</div></div>
+<div style="display:flex;gap:8px;align-items:center">
+<div class="code" id="mycode">SH-....</div>
+<div onclick="logout()" style="color:#555;font-size:18px">↪</div>
+</div>
+</header>
+
+<div class="ghost-card">
+<div style="font-weight:bold;margin-bottom:8px">👻 وضع الشبح</div>
+<div class="row"><span>اخفاء اني اونلاين</span><div class="switch on" onclick="toggle(this)" data-k="online"><div class="dot"></div></div></div>
+<div class="row"><span>اخفاء "يكتب الآن"</span><div class="switch on" onclick="toggle(this)" data-k="typing"><div class="dot"></div></div></div>
+<div class="row" style="border:none"><span>اخفاء "تمت القراءة"</span><div class="switch on" onclick="toggle(this)" data-k="read"><div class="dot"></div></div></div>
+</div>
+
+<div style="padding:0 14px;display:flex;gap:8px">
+<input id="codeInput" placeholder="كود الصديق SH-...">
+<button onclick="addFriend()" style="width:90px;background:#fff;color:#000;border:none;border-radius:12px;font-weight:bold">إضافة</button>
+</div>
+
+<div style="margin:14px;background:#0a0a0a;border:1px solid #151515;border-radius:16px;overflow:hidden">
+<div style="padding:12px;font-weight:bold;font-size:13px;color:#888">الأصدقاء المجهولين</div>
+<div id="friends"></div>
+</div>
+
+<div style="padding:0 14px;display:flex;gap:8px">
+<button onclick="randomChat()" style="flex:1;background:#151515;color:#fff;border:1px solid #222">🎲 شات عشوائي</button>
+<button onclick="alert('قريبا: جروب بالكود')" style="flex:1;background:#151515;color:#fff;border:1px solid #222">👥 جروب بكود</button>
+</div>
+</div>
+
+<div id="chat" class="hidden">
+<div style="padding:12px;background:#0a0a0a;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;gap:10px">
+<span onclick="closeChat()" style="font-size:24px">←</span>
+<b id="chatWith">SH-...</b>
+<select id="vanish" style="margin-right:auto;background:#111;color:#fff;border:1px solid #222;border-radius:8px;padding:4px;font-size:11px">
+<option value="0">لا تختفي</option><option value="10">10 ثواني</option><option value="60">1 دقيقة</option><option value="86400">24 ساعة</option>
+</select>
+</div>
+<div class="msgs" id="msgs"></div>
+<div style="padding:10px;background:#0a0a0a;display:flex;gap:8px;border-top:1px solid #1a1a1a">
+<input id="msgInput" placeholder="رسالة شبح..."><button onclick="send()" style="width:50px;background:#fff;color:#000;border:none;border-radius:12px">➤</button>
+</div>
+</div>
+
+<script>
+let myCode=localStorage.getItem('sh_code')||('SH-'+Math.random().toString(36).slice(2,6).toUpperCase());
+localStorage.setItem('sh_code',myCode);
+let friends=JSON.parse(localStorage.getItem('sh_friends')||'[]');
+let chats=JSON.parse(localStorage.getItem('sh_chats')||'{}');
+let current=null;
+
+function login(type){
+ if(type=='phone'){let p=prompt('اكتب رقمك (تجريبي):'); if(!p) return;}
+ localStorage.setItem('sh_logged','1');
+ document.getElementById('loginPage').classList.add('hidden');
+ document.getElementById('appPage').classList.remove('hidden');
+ document.getElementById('mycode').innerText=myCode;
+ render();
+}
+function logout(){localStorage.removeItem('sh_logged');location.reload()}
+function toggle(el){el.classList.toggle('on')}
+function render(){
+ document.getElementById('mycode').innerText=myCode;
+ let box=document.getElementById('friends');
+ if(!friends.length) box.innerHTML='<div style="padding:20px;color:#333;text-align:center">مفيش اصدقاء<br>ضيف كود</div>';
+ else box.innerHTML=friends.map(c=>`<div class="friend" onclick="openChat('${c}')"><span>${c}</span><span style="font-size:11px;color:#444">${(chats[c]||[]).length} رسالة</span></div>`).join('');
+}
+function addFriend(){
+ let c=document.getElementById('codeInput').value.trim().toUpperCase();
+ if(!c) return; if(c==myCode) return alert('ده كودك!');
+ if(friends.includes(c)) return alert('موجود');
+ friends.push(c); chats[c]=[]; document.getElementById('codeInput').value=''; localStorage.setItem('sh_friends',JSON.stringify(friends)); render();
+}
+function openChat(c){current=c;document.getElementById('chatWith').innerText=c;document.getElementById('chat').classList.remove('hidden');renderMsgs()}
+function closeChat(){document.getElementById('chat').classList.add('hidden');current=null}
+function renderMsgs(){let m=document.getElementById('msgs');m.innerHTML=(chats[current]||[]).map(x=>`<div class="bubble ${x.me?'me':'other'}">${x.t}</div>`).join('');m.scrollTop=m.scrollHeight}
+function send(){
+ let i=document.getElementById('msgInput'); if(!i.value.trim()||!current) return;
+ chats[current].push({t:i.value,me:true}); i.value=''; save();
+ // محاكاة رد
+ setTimeout(()=>{chats[current].push({t:'👻 تم الاستلام في وضع الشبح (السيرفر الحقيقي الخطوة الجاية)',me:false}); save(); renderMsgs()},600);
+ renderMsgs();
+}
+function save(){localStorage.setItem('sh_friends',JSON.stringify(friends));localStorage.setItem('sh_chats',JSON.stringify(chats))}
+function randomChat(){let r='SH-'+Math.random().toString(36).slice(2,6).toUpperCase(); friends.push(r); chats[r]=[{t:'👋 اهلا! انت في شات عشوائي مجهول',me:false}]; save(); openChat(r); render();}
+if(localStorage.getItem('sh_logged')){document.getElementById('loginPage').classList.add('hidden');document.getElementById('appPage').classList.remove('hidden');document.getElementById('mycode').innerText=myCode;render()}
+</script>
+</body>
+</html>

@@ -7,19 +7,19 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
-      - name: Install and build
+      - name: Build APK
         run: |
           npm install
           if [ ! -d android ]; then npx cap add android; fi
           npx cap sync android
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew assembleDebug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
